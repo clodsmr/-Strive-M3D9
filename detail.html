@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 200px;">
+        <a class="navbar-brand" href="#">Strivazon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="backOffice.html">BackOffice</a>
+
+
+            </div>
+        </div>
+    </nav>
+
+    <div>
+        <ul class="list-group" id="productDetails">
+           
+          </ul>
+    </div>
+    <script>
+
+const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjRlMDRiYjUzZDAwMTViMTlmMTMiLCJpYXQiOjE2MzIzMTQ1OTMsImV4cCI6MTYzMzUyNDE5M30.rdgfStIG5vJNAgv7Li_BHNM3N3YKTNhYOkCLmSc0AKQ");
+ 
+         const detail = async ()=> {
+
+            try {
+        
+            const productId = new URLSearchParams(window.location.search).get("productId")
+            const response = await fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
+                    method: 'GET',
+                    headers: myHeaders,
+
+                })
+                const product = await response.json() 
+
+                console.log(product)
+
+                if (response.ok) {
+                    let productDetails = document.getElementById("productDetails")
+                    productDetails.innerHTML = `
+                    <li class="list-group-item">Brand: ${product.brand}</li>
+            <li class="list-group-item">Created at: ${product.createdAt}</li>
+            <li class="list-group-item">Description :${product.description}</li>
+            <li class="list-group-item">Image URL: ${product.imageUrl}</li>
+            <li class="list-group-item">Name : ${product.name}</li>
+            <li class="list-group-item">Price : ${product.price}</li>
+            <li class="list-group-item">Updated at : ${product.updatedAt}</li>
+            <li class="list-group-item"> Product Id : ${product._id}</li>`
+                }
+
+        }catch (e) {console.log("the error is ", e)
+        }
+        }
+    window.onload = () => {
+        detail()
+    }
+
+    </script>
+</body>
+</html>
